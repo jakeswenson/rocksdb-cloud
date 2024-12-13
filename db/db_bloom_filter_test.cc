@@ -2721,9 +2721,7 @@ TEST_F(DBBloomFilterTest, OptimizeFiltersForHits) {
     // Optimization at the Read level, rather than the column family one
     read_options.optimize_for_hits = true;
     std::unique_ptr<Iterator> iter(db_->NewIterator(read_options, handles_[1]));
-    int i = 0;
     for (iter->SeekToFirst(); iter->Valid(); iter->Next()) {
-      ++i;
     }
     ASSERT_EQ(0, TestGetTickerCount(options, BLOCK_CACHE_FILTER_MISS));
     ASSERT_EQ(0, TestGetTickerCount(options, BLOCK_CACHE_FILTER_HIT));
@@ -2741,9 +2739,7 @@ TEST_F(DBBloomFilterTest, OptimizeFiltersForHits) {
     // Optimization disabled at both Read and column family level.
     std::unique_ptr<Iterator> iter(
         db_->NewIterator(ReadOptions(), handles_[1]));
-    int i = 0;
     for (iter->SeekToFirst(); iter->Valid(); iter->Next()) {
-      ++i;
     }
     // We accessed the block cache
     ASSERT_LT(0, TestGetTickerCount(options, BLOCK_CACHE_FILTER_MISS));
